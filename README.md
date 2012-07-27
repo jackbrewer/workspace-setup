@@ -1,6 +1,6 @@
 # Workspace Setup
 
-A base AppleScript file which can be modified to open relevant programs and folders for individual projects.
+A base AppleScript file which can be modified to open relevant programs and folders for individual projects. This is especially useful for switching between projects quickly and easily.
 
 ## Current Features
 
