@@ -4,10 +4,10 @@ set projectURL to "http://localhost:3000"
 # Launch iTerm
 tell application "iTerm"
 	activate
-	
+
 	set myterm to (make new terminal)
 	tell myterm
-		
+
 		## Open tab for Nodemon to monitor current project
 		launch session "Nodemon"
 		tell the last session to write text "cd " & projectPath
@@ -20,21 +20,21 @@ tell application "iTerm"
 		tell the last session to write text "http-server"
 
 		## Open tab to start Jekyll server
-		set jekyllSource to "/source"
+		set jekyllSource to "/"
 		launch session "Jekyll"
 		tell the last session to write text "cd " & projectPath & jekyllSource
 		tell the last session to write text "jekyll --server"
-		
+
 		## Open tab for Compass to monitor SASS directory
-		set sassSource to "/source/_sass"
+		set sassSource to "/sass"
 		launch session "SASS"
 		tell the last session to write text "cd " & projectPath & sassSource
 		tell the last session to write text "compass watch --poll"
-		
+
 		## Open tab for project directory
 		launch session "Project"
 		tell the last session to write text "cd " & projectPath
-		
+
 	end tell
 end tell
 
