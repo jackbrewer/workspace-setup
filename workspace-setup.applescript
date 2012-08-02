@@ -12,7 +12,13 @@ tell application "iTerm"
 		launch session "Nodemon"
 		tell the last session to write text "cd " & projectPath
 		tell the last session to write text "nodemon"
-		
+
+		## Open tab for HTTP-Server to access compiled site on localhost:8080
+		launch session "HTTP-Server"
+		set httpServerSource to "/"
+		tell the last session to write text "cd " & projectPath & httpServerSource
+		tell the last session to write text "http-server"
+
 		## Open tab to start Jekyll server
 		set jekyllSource to "/source"
 		launch session "Jekyll"
