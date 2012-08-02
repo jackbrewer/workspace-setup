@@ -39,15 +39,52 @@ tell application "Finder" to open (projectPath as POSIX file)
 set sublimeSubfolder to ""
 tell application "Sublime Text 2" to open projectPath & sublimeSubfolder
 
-## Launch project in Google Chrome
-tell application "Google Chrome"
+## Launch Project URL in Google Chrome
+## Refreshes tab if it already exists, otherwise it creates one
+tell application "Google Chrome Canary"
 	activate
-	
-	## Open project URL in a new window
-	make new window
-	tell window 1 to set active tab's URL to projectURL
-	
-	## Open project URL in a new tab in current window
-	tell window 1 to make new tab with properties {URL:projectURL}
-	
+
+	## If there are no windows, chances are the app is closed, so delay a couple of seconds
+	## to give it chance to activate so we can count tabs.
+	if (count every window) = 0 then
+		delay 2
+	end if
+
+	## If there really were no windows, create one.
+	if (count every window) = 0 then
+		make new window
+	end if
+
+	## Search for any tab that already has the Project URL open
+	set found to false
+	set theTabIndex to -1
+	repeat with theWindow in every window
+		set theTabIndex to 0
+		repeat with theTab in every tab of theWindow
+			set theTabIndex to theTabIndex + 1
+			if theTab's URL = projectURL then
+				set found to true
+				exit repeat
+			end if
+		end repeat
+
+		if found then
+			exit repeat
+		end if
+	end repeat
+
+	if found then
+		## If the Project URL tab is already open, refresh and bring it to the front
+		tell theTab to reload
+		set theWindow's active tab index to theTabIndex
+		set index of theWindow to 1
+	else
+		## If the project URL tab isn't already open:
+
+		## create a new tab for it
+		tell window 1 to make new tab with properties {URL:projectURL}
+
+	end if
+	activate
+
 end tell
